@@ -6,6 +6,7 @@ SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 clients = []
+names = []
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
@@ -17,14 +18,14 @@ def start_server():
     while True:
         conn, addr = server.accept()
         clients += [conn]
-        thread = threading.Thread(target=receive_msg, args=(conn,))
+        thread = threading.Thread(target=handle_client, args=(conn,))
         thread.start()
         print(f'[CONNECTION] {addr} has connected!')
 
 
-def broadcast(msg, name):
+def broadcast(name, msg):
     for client in clients:
-        client.send(f'[{name}]: {msg}'.encode(FORMAT))
+        client.send(f'[{name}]: {msg}\n'.encode(FORMAT))
 
 
 def close_conn(conn):
@@ -32,20 +33,26 @@ def close_conn(conn):
     conn.close()
 
 
-def receive_msg(conn):
+def handle_client(conn):
     connected = True
 
     name = conn.recv(1024).decode(FORMAT)
     conn.send(f"Welcome to the chat {name}!".encode(FORMAT))
+    broadcast(name, "has entered the chat!" )
+    names.append(name)
+    broadcast("EXISTING USERS", ", ".join(names))
 
     while connected:
         msg = conn.recv(1024).decode(FORMAT)
         print(f'[{name}] {msg}')
-        broadcast(msg, name)
+        broadcast(name, msg)
         if msg == "!DISCONNECT":
-            broadcast("has left the chat", name)
+            broadcast(name, "has left the chat" )
             connected = False
     close_conn(conn)
+    names.remove(name)
+
+
 
 start_server()
 
