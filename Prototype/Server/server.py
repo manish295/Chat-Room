@@ -45,15 +45,18 @@ def handle_client(conn):
     while connected:
         msg = conn.recv(1024).decode(FORMAT)
         print(f'[{name}] {msg}')
-        broadcast(name, msg)
         if msg == "!DISCONNECT":
             broadcast(name, "has left the chat" )
             connected = False
+        else:
+            broadcast(name, msg)
+        
     close_conn(conn)
     names.remove(name)
+    broadcast("EXISTING USERS", ", ".join(names))
 
 
-
-start_server()
+if __name__ == "__main__":
+    start_server()
 
 

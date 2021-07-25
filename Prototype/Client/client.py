@@ -28,13 +28,14 @@ def set_name(name):
     send_msg(name)
 
 
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
+if __name__ == "__main__":
+    receive_thread = threading.Thread(target=receive)
+    receive_thread.start()
 
-set_name(input("What is your name?: "))
+    set_name(input("What is your name?: "))
 
-while True:
-    msg = input()
-    send_msg(msg)
-    if msg == "!DISCONNECT":
-        break
+    while True:
+        msg = input()
+        send_msg(msg)
+        if msg == "!DISCONNECT":
+            break
