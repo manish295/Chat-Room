@@ -1,9 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+  h1{
+    text-align: center;
+    color: rgb(22, 3, 109);
+    font-family: "Cambria";
+  }
+  
+  h2{
+    text-align: center;
+  }
+  form{
+    text-align: center;
+  }
+  .log-form{
+    margin-top: 100px;
+  }
+</style>
 <form action="#" method="POST">
+    <h1>Welcome to the Chat App!</h1>
     <div class="log-form">
         <h2>Enter your name</h2>
         <form>
-          <input type="text" name = "nm" title="username"/>
-          <button type="submit" class="btn">submit</button>
+          <input type="text" name = "nm"/>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
-</form
+</form>
+{% endblock %}
