@@ -21,7 +21,8 @@
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='index.js')}}"></script> -->
 
-<h1>Welcome {{name}}!</h1>
+<h1>Welcome {{usr_name}}!</h1>
+<script type="text/javascript">const usr_name = `{{usr_name}}`;</script>
 
 <div class="input-group mb-3">
     <input type="text" class="form-control" placeholder="Enter message" aria-label="Enter message" id="msg">
@@ -29,8 +30,9 @@
         <button class="btn btn-outline-secondary" type="button" id="sendBtn">Send</button>
     </div>
 </div>
-
+<div id='msg-section'></div>
 <textarea id='msgArea' placeholder="Messages"></textarea>
+
 {% endblock %}
 
 

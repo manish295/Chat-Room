@@ -6,7 +6,7 @@ import threading
 class Client:
     PORT = 5050
     FORMAT = 'utf-8'
-    SERVER = socket.gethostbyname(socket.gethostname())
+    SERVER = "192.168.1.216"
     ADDR = (SERVER, PORT)
 
 
@@ -16,7 +16,8 @@ class Client:
         self.client.connect(self.ADDR)
         receive_thread = threading.Thread(target=self.receive)
         receive_thread.start()
-        self.set_name(name)
+        self.name = name
+        self.set_name()
         
 
 
@@ -38,11 +39,12 @@ class Client:
         return data
 
 
-    def set_name(self, name):
-        self.send_msg(name)
+    def set_name(self):
+        self.send_msg(self.name)
     
-
-
+    def return_name(self):
+        return self.name
+    
 
 
 
