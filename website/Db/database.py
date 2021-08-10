@@ -1,15 +1,12 @@
 import sqlite3
-from sqlite3 import Error
 
 
 
 class Database:
 
     def __init__(self):
-        self.conn = sqlite3.connect('website\Db\messages.db', check_same_thread=False)
-        # self.conn.execute("PRAGMA journal_mode=WAL;")
+        self.conn = sqlite3.connect('messages.db')
         self.c = self.conn.cursor()
-        # self.c.execute("PRAGMA journal_mode=WAL;")
 
     def save_messages(self, name, message):
         self.c.execute(f"INSERT INTO messages VALUES ('{name}', '{message}')")
@@ -43,11 +40,4 @@ class Database:
             vals = self.c.fetchall()
             self.conn.commit()
             return vals
-
-    
-
-
-# db = Database()
-# db.remove_messages("messages")
-# db.close()
 

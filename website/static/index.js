@@ -4,8 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('event', data => {
             console.log("Message recieved: " + data)
-            var text = document.createTextNode(data + "\n");
-            document.getElementById('msgArea').append(text);
+            var content = `<div class="container" style="
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            ">` + '<p>' + data + '</p>'
+            // var text = document.createTextNode(data + "\n");
+            // document.getElementById('msgArea').append(text);
+            var updateDiv = document.getElementById("messages");
+            updateDiv.innerHTML += content;
           
 
         });
@@ -14,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#msg').value = "";
             socket.emit('event', usr_name + ": " + message); //const usr_name in index.html
         }
-
+        scrollBottom("messages");
+        // scrollDownChatWindow();
     }
 
 });

@@ -44,26 +44,4 @@ class Client:
     
     def return_name(self):
         return self.name
-    
 
-
-
-
-
-# usr1 = Client("Test")
-# time.sleep(2)
-# usr2 = Client("Test2")
-# time.sleep(2)
-# usr1.send_msg("waddup!")
-# time.sleep(2)
-# usr2.send_msg("yo")
-# time.sleep(2)
-# usr1.send_msg("wassup")
-# time.sleep(2)
-# usr2.send_msg('nm wbu?')
-# time.sleep(2)
-# usr1.send_msg("!DISCONNECT")
-# time.sleep(2)
-# usr2.send_msg('!DISCONNECT')
-
-# print(msgs)

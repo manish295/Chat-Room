@@ -17,20 +17,27 @@
         background-color: #f8f8f8;
         resize: none;
     }
+   
 </style>
 
 <h1>Welcome {{usr_name}}!</h1>
 <script type="text/javascript">const usr_name = `{{usr_name}}`;</script>
-
-<div class="input-group mb-3">
-    <textarea id='msgArea' placeholder="Messages" readonly></textarea>
-    <input type="text" class="form-control" placeholder="Enter message" aria-label="Enter message" id="msg">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="sendBtn">Send</button><br>
-        <a class="btn btn-primary" href="/logout" role="button">Logout</a>
+  
+<div class="container">
+    <div id="messages" class="overflow-auto msgs" style="overflow-y: scroll; height:500px;">
 
     </div>
+    <div class="input-group mb-3">
+        <!-- <textarea id='msgArea' placeholder="Messages" readonly></textarea> -->
+        <input type="text" class="form-control" placeholder="Enter message" aria-label="Enter message" id="msg">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="sendBtn">Send</button><br>
+            <a class="btn btn-primary" href="/logout" role="button">Logout</a>
+
+        </div>
+    </div>
 </div>
+    
 
 {% endblock %}
 
