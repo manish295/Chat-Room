@@ -53,21 +53,21 @@ def disconect_msg():
 @socketio.on('connect')
 def connected():
     users.append(session["name"])
-    connected_msg = session["name"] + ": " + "has joined!"
+    connected_msg = session["name"].replace("'","''") + ": " + "has joined!"
     db = Database()
     messages = db.return_messages("Manish", all=True)
-    db.save_messages(session["name"], connected_msg)
+    db.save_messages(session["name"].replace("'","''"), connected_msg)
     db.close()
     for message in messages:
         emit("event", message)
-    emit("event", connected_msg, broadcast=True)
+    emit("event", session["name"] + ": " + "has joined!", broadcast=True)
 
 
 @socketio.on('event')
 def handle_custom_event(data):
     print(f'received custom event!: ' + data)
     db = Database()
-    db.save_messages(session["name"], data)
+    db.save_messages(session["name"].replace("'","''"), data.replace("'","''"))
     db.close()
     emit("event", data, broadcast=True)
     
