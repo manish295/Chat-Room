@@ -1,6 +1,7 @@
-from flask import Flask, redirect, url_for, render_template, request, session, flash, jsonify
-from flask_socketio import SocketIO, send
-
+from Db.database import Database
+from flask import Flask, redirect, url_for, render_template, request, session, flash
+from flask_socketio import SocketIO, emit, send
+users = []
 
 app = Flask(__name__)
 app.secret_key = "thisisasecret"
@@ -15,6 +16,7 @@ def home():
     
 
     name = session["name"]
+    
     return render_template("index.html", usr_name=name)
 
 
@@ -35,20 +37,41 @@ def logout():
     session.pop("name", None)
     return redirect(url_for("login"))
 
-
-@app.route("/get_name", methods=["POST", "GET"])
-def get_name():
-    if "name" in session:
-        name = {"name" : session["name"]}
-    return jsonify(name)
   
 
-@socketio.on("message")
-def message(data):
-    print(f'{data}')
-    send(data, broadcast=True)
+
+@socketio.on('disconnect')
+def disconect_msg():
+    print(f'Disconnected!')
+    emit("event", session["name"] + ": " + "has left!", broadcast=True)
+    users.remove(session["name"])
+    if len(users) == 0:
+        db = Database()
+        db.remove_messages("messages")
+        db.close()
+
+@socketio.on('connect')
+def connected():
+    users.append(session["name"])
+    connected_msg = session["name"] + ": " + "has joined!"
+    db = Database()
+    messages = db.return_messages("Manish", all=True)
+    db.save_messages(session["name"], connected_msg)
+    db.close()
+    for message in messages:
+        emit("event", message)
+    emit("event", connected_msg, broadcast=True)
 
 
+@socketio.on('event')
+def handle_custom_event(data):
+    print(f'received custom event!: ' + data)
+    db = Database()
+    db.save_messages(session["name"], data)
+    db.close()
+    emit("event", data, broadcast=True)
+    
+  
 
 if __name__ == "__main__":
    socketio.run(app, debug=True, host="192.168.1.216")
