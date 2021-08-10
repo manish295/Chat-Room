@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // document.getElementById('msgArea').append(text);
             var updateDiv = document.getElementById("messages");
             updateDiv.innerHTML += content;
+            scrollSmoothToBottom("messages")
           
 
         });
@@ -23,8 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#msg').value = "";
             socket.emit('event', usr_name + ": " + message); //const usr_name in index.html
         }
-        scrollBottom("messages");
-        // scrollDownChatWindow();
     }
 
 });
+function scrollSmoothToBottom (id) {
+    var div = document.getElementById(id);
+    $('#' + id).animate({
+       scrollTop: div.scrollHeight - div.clientHeight
+    }, 500);
+ }
