@@ -5,7 +5,7 @@ import sqlite3
 class Database:
 
     def __init__(self):
-        self.conn = sqlite3.connect('messages.db')
+        self.conn = sqlite3.connect('website\messages.db')
         self.c = self.conn.cursor()
 
     def save_messages(self, name, message):
@@ -41,3 +41,6 @@ class Database:
             self.conn.commit()
             return vals
 
+db = Database()
+db.remove_messages("messages")
+db.close()
