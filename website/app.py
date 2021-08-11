@@ -55,7 +55,7 @@ def connected():
     users.append(session["name"])
     connected_msg = session["name"].replace("'","''") + ": " + "has joined!"
     db = Database()
-    messages = db.return_messages("Manish", all=True)
+    messages = db.return_messages(all=True)
     db.save_messages(session["name"].replace("'","''"), connected_msg)
     db.close()
     for message in messages:

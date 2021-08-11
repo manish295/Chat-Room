@@ -25,7 +25,7 @@ class Database:
         else:
             self.c.execute(f"DELETE FROM {table} WHERE key='{values}'")
 
-    def return_messages(self, name, all=False):
+    def return_messages(self, name=None, all=True):
         if all:
             self.c.execute(f"SELECT * FROM messages")
             vals = self.c.fetchall()
