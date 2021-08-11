@@ -2,7 +2,10 @@
 
 {% block content %}
 
-<style>
+<style>  
+    body{
+        background-color: #50a3a2;
+    }
     H1 {
         text-align: center;
     }
@@ -31,7 +34,7 @@
         <!-- <textarea id='msgArea' placeholder="Messages" readonly></textarea> -->
         <input type="text" class="form-control" placeholder="Enter message" aria-label="Enter message" id="msg">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="sendBtn">Send</button><br>
+            <button class="btn btn-danger" type="button" id="sendBtn">Send</button><br>
             <a class="btn btn-primary" href="/logout" role="button">Logout</a>
 
         </div>

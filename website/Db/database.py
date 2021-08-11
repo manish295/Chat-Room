@@ -41,6 +41,3 @@ class Database:
             self.conn.commit()
             return vals
 
-db = Database()
-db.remove_messages("messages")
-db.close()

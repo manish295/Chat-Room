@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('event', data => {
             console.log("Message recieved: " + data)
-            var content = `<div class="container" style="
+            var content = `
+            <div class="container" style="
             border: 2px solid #dedede;
             background-color: #f1f1f1;
             border-radius: 5px;
             padding: 10px;
             margin: 10px 0;
+            animation: slideRight;
             ">` + '<p>' + data + '</p>'
             // var text = document.createTextNode(data + "\n");
             // document.getElementById('msgArea').append(text);
