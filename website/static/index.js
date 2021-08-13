@@ -11,13 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
             border-radius: 5px;
             padding: 10px;
             margin: 10px 0;
-            animation: slideRight;
+            animation-name: slidein;
+            animation-duration: 0.5s;
             ">` + '<p>' + data + '</p>'
             // var text = document.createTextNode(data + "\n");
             // document.getElementById('msgArea').append(text);
             var updateDiv = document.getElementById("messages");
-            updateDiv.innerHTML += content;
-            scrollSmoothToBottom("messages")
+            // updateDiv.innerHTML += (content);
+            updateDiv.insertAdjacentHTML("beforeend", content);
+            scrollSmoothToBottom("messages");
           
 
         });
@@ -26,12 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#msg').value = "";
             socket.emit('event', usr_name + ": " + message); //const usr_name in index.html
         }
+        updateScroll("messages");
     }
 
 });
 function scrollSmoothToBottom (id) {
     var div = document.getElementById(id);
     $('#' + id).animate({
-       scrollTop: div.scrollHeight - div.clientHeight
+       scrollTop: (div.scrollHeight) - (div.clientHeight - 95)
     }, 500);
  }
+
+ function updateScroll(id){
+    var element = document.getElementById(id);
+    element.scrollTop = element.scrollHeight;
+}

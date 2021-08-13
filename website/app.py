@@ -25,7 +25,6 @@ def login():
     if request.method == "POST":
         name = request.form["nm"]
         session["name"] = name
-        flash(f"Logged in as {name}")
         return redirect(url_for("home"))
 
     
