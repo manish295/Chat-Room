@@ -1,8 +1,12 @@
+//Executes when DOM contents are fully loaded
 document.addEventListener('DOMContentLoaded', () => {
 
+    //Executes if the user is in the chat room page
     if (window.location.pathname == "/"){
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('event', data => {
+        var socket = io.connect('http://' + document.domain + ':' + location.port); //Triggers a 'connection' event
+
+        //On receiving a message, append it to the 'messages' div
+        socket.on('messaging', data => {
             console.log("Message recieved: " + data)
             var content = `
             <div class="container" style="
@@ -14,24 +18,25 @@ document.addEventListener('DOMContentLoaded', () => {
             animation-name: slidein;
             animation-duration: 0.5s;
             ">` + '<p>' + data + '</p>'
-            // var text = document.createTextNode(data + "\n");
-            // document.getElementById('msgArea').append(text);
             var updateDiv = document.getElementById("messages");
-            // updateDiv.innerHTML += (content);
             updateDiv.insertAdjacentHTML("beforeend", content);
             scrollSmoothToBottom("messages");
           
 
         });
+
+        //On the click of the 'Send' button, get the value from the text box and emit it
         document.querySelector('#sendBtn').onclick = () => {
             var message = document.querySelector('#msg').value;
             document.querySelector('#msg').value = "";
-            socket.emit('event', usr_name + ": " + message); //const usr_name in index.html
+            //Triggers a custom 'messaging' event
+            socket.emit('messaging', usr_name + ": " + message); //const usr_name in index.html
         }
         updateScroll("messages");
     }
 
 });
+
 function scrollSmoothToBottom (id) {
     var div = document.getElementById(id);
     $('#' + id).animate({
