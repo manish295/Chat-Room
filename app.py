@@ -1,13 +1,11 @@
 from Db.database import Database
 from flask import Flask, redirect, url_for, render_template, request, session
-from datetime import timedelta
 from flask_socketio import SocketIO, emit
 import os
 users = []
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET')
-app.permanent_session_lifetime = timedelta(minutes=5)
 socketio = SocketIO(app)
 
 @app.route("/")
@@ -24,7 +22,6 @@ def home():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        session.permanent = True
         name = request.form["nm"]
         session["name"] = name
         return redirect(url_for("home"))
@@ -43,7 +40,7 @@ Triggers when a user disconnects
 Emit a leaving message
 If no users are in the chat, delete the messages in db
 """
-@socketio.on('disconnect_client')
+@socketio.on('disconnect')
 def disconect_msg():
     print(f'Disconnected!')
     emit("messaging", session["name"] + ": " + "has left!", broadcast=True)
