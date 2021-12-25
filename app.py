@@ -1,13 +1,14 @@
 from Db.database import Database
 from flask import Flask, redirect, url_for, render_template, request, session
+from datetime import timedelta
 from flask_socketio import SocketIO, emit
+import os
 users = []
 
 app = Flask(__name__)
-app.secret_key = "thisisasecret"
+app.secret_key = os.environ.get('SECRET')
+app.permanent_session_lifetime = timedelta(minutes=5)
 socketio = SocketIO(app)
-
-
 
 @app.route("/")
 def home():
@@ -23,6 +24,7 @@ def home():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
+        session.permanent = True
         name = request.form["nm"]
         session["name"] = name
         return redirect(url_for("home"))
@@ -41,14 +43,14 @@ Triggers when a user disconnects
 Emit a leaving message
 If no users are in the chat, delete the messages in db
 """
-@socketio.on('disconnect')
+@socketio.on('disconnect_client')
 def disconect_msg():
     print(f'Disconnected!')
     emit("messaging", session["name"] + ": " + "has left!", broadcast=True)
     users.remove(session["name"])
     if len(users) == 0:
         db = Database()
-        db.remove_messages("messages")
+        db.remove_messages()
         db.close()
 
 """"
@@ -60,8 +62,8 @@ def connected():
     users.append(session["name"])
     connected_msg = session["name"].replace("'","''") + ": " + "has joined!"
     db = Database()
-    messages = db.return_messages(all=True)
-    db.save_messages(session["name"].replace("'","''"), connected_msg)
+    messages = db.return_messages()
+    db.add_message(session["name"].replace("'", "''"), connected_msg)
     db.close()
     for message in messages:
         emit("messaging", message)
@@ -75,11 +77,11 @@ Store message sent from client and emit the message back
 def handle_custom_event(data):
     print(f'received custom event!: ' + data)
     db = Database()
-    db.save_messages(session["name"].replace("'","''"), data.replace("'","''"))
+    db.add_message(session["name"].replace("'","''"), data.replace("'","''"))
     db.close()
     emit("messaging", data, broadcast=True) 
     
   
 
 if __name__ == "__main__":
-   socketio.run(app, debug=True, host="0.0.0.0")
+   app.run()

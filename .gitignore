@@ -1,3 +1,2 @@
-.venv/
-website/messages.db
+venv/
 __pycache__/

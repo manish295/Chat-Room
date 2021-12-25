@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit('messaging', usr_name + ": " + message); //const usr_name in index.html
         }
         updateScroll("messages");
+
+        //On the click of a 'Log out' button, emit a disconnect client event
+        document.querySelector('#logoutbtn').onclick = () => {
+            socket.emit('disconnect_client');
+        }
     }
 
 });
